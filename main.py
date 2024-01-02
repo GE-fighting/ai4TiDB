@@ -1,16 +1,29 @@
-# This is a sample Python script.
+from flask import Flask, request, jsonify
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+app = Flask(__name__)
 
+# 假设你已经有了一个模型状态字典，比如model_state
+model_state = {
+    'foo': 'bar',
+    'baz': 'qux'
+}
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+# 创建一个接收GET请求的端点
+@app.route('/get_model_state', methods=['GET'])
+def get_model_state():
+    return jsonify(model_state)
 
+# 创建一个接收POST请求的端点
+@app.route('/update_model_state', methods=['POST'])
+def update_model_state():
+    data = request.get_json()
+    # 假设请求的JSON数据格式为 {'key': 'new_value'}
+    key = data.get('key')
+    if key in model_state:
+        model_state[key] = data['value']
+        return 'Model state updated successfully'
+    else:
+        return 'Key not found in model state', 404
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    app.run()
