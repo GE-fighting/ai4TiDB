@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from controllers.main_controller import MainController
 
 app = Flask(__name__)
@@ -13,9 +13,10 @@ def index():
     return main_controller.index()
 
 
-@app.route('/predict')
+@app.route('/predict', methods=['POST'])
 def predict():
-    return main_controller.predict()
+    request_body_string = request.data.decode('utf-8')
+    return main_controller.predict(request_body_string)
 
 if __name__ == '__main__':
     app.run(debug=True)

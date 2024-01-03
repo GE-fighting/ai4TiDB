@@ -13,8 +13,8 @@ class MainController:
         }
         return jsonify(data)
 
-    def predict(self):
+    def predict(self, conds):
         # input_data = request.json
-        prediction = main_service.make_prediction()
+        prediction = main_service.make_prediction(conds)
         print(prediction)
-        return jsonify({'prediction': prediction})
+        return jsonify({'selectivity': prediction, 'err_msg': ''})
