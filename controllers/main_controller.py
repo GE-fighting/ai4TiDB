@@ -1,6 +1,6 @@
 # controllers/main_controller.py
 
-from flask import jsonify, request
+from flask import jsonify
 from services.main_service import MainService
 
 
@@ -15,6 +15,5 @@ class MainController:
 
     def predict(self, conds):
         # input_data = request.json
-        prediction = main_service.make_prediction(conds)
-        print(prediction)
-        return jsonify({'selectivity': prediction, 'err_msg': ''})
+        prediction, query = main_service.make_prediction(conds)
+        return prediction, query

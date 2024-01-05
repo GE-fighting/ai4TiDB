@@ -3,11 +3,15 @@ from models.model import LWNNModel
 import torch
 import services.statistics as stats
 import services.range_query as rq
+
+
+from flask import g
 class MainService:
     def make_prediction(self, conds_str):
         # 处理conds:  “a > 1 and b < 9 and c >100 ....”
-        query = 'select * from imdb.title where ' + conds_str
+        query = 'select count(*) from imdb.title where ' + conds_str
         print(query)
+        # record = {'sql': query}
         feature = []
         range_query = rq.ParsedRangeQuery.parse_range_query(query)
         col_left = range_query.col_left
@@ -43,7 +47,7 @@ class MainService:
         input_data = torch.tensor(feature, dtype=torch.float)
         prediction = mlp_model(input_data)
         result = prediction.tolist()[0]/table_stats.row_count
-        return result
+        return result, query
 
 def min_max_normalize(v, min_v, max_v):
      # The function may be useful when dealing with lower/upper bounds of columns.
