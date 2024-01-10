@@ -15,5 +15,5 @@ class MainController:
 
     def predict(self, conds):
         # input_data = request.json
-        prediction, query = main_service.make_prediction(conds)
-        return prediction, query
+        return main_service.make_prediction(conds)
+

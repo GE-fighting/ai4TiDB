@@ -23,9 +23,9 @@ def index():
 @app.route('/predict', methods=['POST'])
 def predict():
     request_body_string = request.data.decode('utf-8')
-    result, query = main_controller.predict(request_body_string)
+    result, query, row_count = main_controller.predict(request_body_string)
     app.config['collected_data'].append(query)
-    app.config['est_mlp_row'].append(result)
+    app.config['est_mlp_row'].append(int(result*row_count))
     return jsonify({'selectivity': result, 'err_msg': ''})
 
 
